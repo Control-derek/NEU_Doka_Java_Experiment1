@@ -23,6 +23,24 @@ public class Course {
 
     public Course() {}
 
+    public static Course inputCourse(int id) {
+        Scanner sc = new Scanner(System.in);
+//        System.out.println("输入课程号");
+//        int id = sc.nextInt();
+        System.out.println("输入课程名");
+        String name = sc.next();
+        System.out.println("输入课程类型：0必修，1选修");
+        int type = sc.nextInt();
+        System.out.println("输入教师名、工号、职称");
+        String tname = sc.next();
+        int tid = sc.nextInt();
+        String level = sc.next();
+        System.out.println("输入上课人数");
+        int num = sc.nextInt();
+        Course c = new Course(id, name, type, new Teacher(tname, tid, level), num);
+        return c;
+    }
+
     public void show() {  // 显示课程信息
         System.out.print(id);
         System.out.print(" " + name);
