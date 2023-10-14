@@ -19,6 +19,10 @@ public class Teacher extends User {
         this.level = level;
     }
 
+    public String toString() {
+        return name + " " + workId + " " + level;
+    }
+
     public void show() {
         System.out.println(workId + " " + name);
     }

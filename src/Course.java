@@ -37,7 +37,17 @@ public class Course {
         String level = sc.next();
         System.out.println("输入上课人数");
         int num = sc.nextInt();
-        Course c = new Course(id, name, type, new Teacher(tname, tid, level), num);
+        Course c;
+        if (type == 0) {
+            System.out.println("输入学分：");
+            int credit = sc.nextInt();
+            c = new RequiredCourse(id, name, new Teacher(tname, tid, level), num, credit);
+        }
+        else {  // 选修课
+            System.out.println("输入最大选课人数：");
+            int maxNum = sc.nextInt();
+            c = new OptionalCourse(id, name, new Teacher(tname, tid, level), num, maxNum);
+        }
         return c;
     }
 
@@ -52,6 +62,10 @@ public class Course {
         System.out.print(" 上课教师：");
         teacher.show();
         System.out.println(" 选课人数：" + num_people);
+    }
+
+    public String toString() {
+        return id + " " + name + " " + type + " " + teacher.toString() + " " + num_people;
     }
 }
 
