@@ -24,7 +24,7 @@ public class Teacher extends User {
     }
 
     public void show() {
-        System.out.println(workId + " " + name);
+        System.out.print(workId + " " + name);
     }
     public int login() {  // 管理员登录方法
         System.out.println("请输入工号：");

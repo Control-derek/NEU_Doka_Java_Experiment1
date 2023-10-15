@@ -16,7 +16,7 @@ public class RequiredCourse extends Course{
 
     public void show() {
         System.out.print(id + " " + name);
-        System.out.println(" 必修 ");
+        System.out.print(" 必修 ");
         teacher.show();
         System.out.println(" " + num_people + " " + credit);
     }

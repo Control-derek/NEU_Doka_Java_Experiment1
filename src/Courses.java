@@ -90,4 +90,34 @@ public class Courses {
             e.printStackTrace();
         }
     }
+
+    public static void readCourses() {  // 读文件得课程
+        try {
+            BufferedReader br = new BufferedReader
+                    (new InputStreamReader(new FileInputStream("./data/Courses.txt")));
+            String data = null;
+            while ((data = br.readLine())!=null) {
+                String[] ps = data.split(" ");
+                int id = Integer.parseInt(ps[0]);
+                String name = ps[1];
+                int type = Integer.parseInt(ps[2]);
+                String tname = ps[3];
+                int tid = Integer.parseInt(ps[4]);
+                String level = ps[5];
+                int num_people = Integer.parseInt(ps[6]);
+                if (type == 0) {
+                    int credit = Integer.parseInt(ps[7]);
+                    Courses.clist.add(new RequiredCourse(id, name, new Teacher(tname, tid, level), num_people, credit));
+                }
+                else {
+                    int maxstu = Integer.parseInt(ps[7]);
+                    Courses.clist.add(new OptionalCourse(id, name, new Teacher(tname, tid, level), num_people, maxstu));
+                }
+            }
+            br.close();  // 关文件
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

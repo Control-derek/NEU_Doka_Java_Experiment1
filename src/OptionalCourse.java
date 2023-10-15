@@ -16,7 +16,7 @@ public class OptionalCourse extends Course{
 
     public void show() {
         System.out.print(id + " " + name);
-        System.out.println(" 选修 ");
+        System.out.print(" 选修 ");
         teacher.show();
         System.out.println(" " + num_people + " " + maxStuNum);
     }

@@ -14,11 +14,13 @@ public class Main {
 //                new Teacher("吴老师", 3, "副教授"), 23));
 //        clist.add(new Course(4, "深度学习", 0,
 //                new Teacher("李老师", 4, "教授"), 50));
-        User user = new User();
-        Courses.addCourses();
-        Courses.SortCourseList();
-        Courses.showCourses();
-
+//        User user = new User();
+//        Courses.addCourses();
+//        Courses.SortCourseList();
+//        Courses.showCourses();
+        Courses.readCourses();
+        menu();
+        Courses.saveCourse();
     }
 
     public static void menu() {
@@ -31,11 +33,14 @@ public class Main {
         }
         MainLoop:
         while(true) {
-            System.out.println("请选择操作:1.新建课程\n" +
-                    "2.删除课程\n 3.设置课程教师\n" +
+            System.out.println("请选择操作:\n1.新建课程\n" +
+                    "2.删除课程\n3.设置课程教师\n" +
                     "4.查找老师讲课课程 \n5.显示课程列表 \n" +
                     "6.按照选课人数进行排序\n7.显示学生列表\n" +
-                    " 8.显示教师列表\n 0,退出");
+                    "8.显示教师列表\n9.添加学生" +
+                    "10.添加老师\n11.删除学生" +
+                    "12.删除老师\n13.初始化学生密码" +
+                    "14.初始化老师密码\n0.退出");
             int choice = sc.nextInt();
             switch (choice) {
                 case 0:  //退出系统
@@ -52,7 +57,7 @@ public class Main {
                 case 4:  // 根据授课教师查找课程
                     Courses.SearchCourseByTeacher();
                     break;
-                case 5:  // 根据授课教师查找课程
+                case 5:  // 显示课程信息
                     Courses.showCourses();
                     break;
                 case 6:  // 按照选课人数排序
@@ -64,6 +69,18 @@ public class Main {
                 case 8:  // 显示所有教师
                     Users.showTeachers();
                     break;
+                case 9:  // 添加学生
+                    Users.addStudents();
+                case 10:  // 添加老师
+                    Users.addTeachers();
+                case 11:  // 删除学生
+                    Users.deleteStudents();
+                case 12:  // 删除老师
+                    Users.deleteTeachers();
+                case 13:  // 初始化学生密码
+                    Users.recoverStudentsPass();
+                case 14:  // 初始化老师密码
+                    Users.recoverTeachersPass();
                 default:  // 非法输入
                     System.out.println("输入错误！！！");
             }
