@@ -18,9 +18,9 @@ public class Main {
 //        Courses.addCourses();
 //        Courses.SortCourseList();
 //        Courses.showCourses();
-        Courses.readCourses();
-        menu();
-        Courses.saveCourse();
+//        Courses.readCourses();
+//        menu();
+//        Courses.saveCourse();
     }
 
     public static void menu() {
