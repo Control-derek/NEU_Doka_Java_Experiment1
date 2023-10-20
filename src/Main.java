@@ -18,9 +18,13 @@ public class Main {
 //        Courses.addCourses();
 //        Courses.SortCourseList();
 //        Courses.showCourses();
-//        Courses.readCourses();
-//        menu();
-//        Courses.saveCourse();
+        Courses.readCourses();
+        menu();
+        Courses.saveCourse();
+//        StringBuffer s1 = new StringBuffer("124");
+//        s1.append(266);
+//        s1.append("223");
+//        System.out.println(s1);
     }
 
     public static void menu() {
@@ -37,9 +41,9 @@ public class Main {
                     "2.删除课程\n3.设置课程教师\n" +
                     "4.查找老师讲课课程 \n5.显示课程列表 \n" +
                     "6.按照选课人数进行排序\n7.显示学生列表\n" +
-                    "8.显示教师列表\n9.添加学生" +
-                    "10.添加老师\n11.删除学生" +
-                    "12.删除老师\n13.初始化学生密码" +
+                    "8.显示教师列表\n9.添加学生\n" +
+                    "10.添加老师\n11.删除学生\n" +
+                    "12.删除老师\n13.初始化学生密码\n" +
                     "14.初始化老师密码\n0.退出");
             int choice = sc.nextInt();
             switch (choice) {
@@ -71,16 +75,22 @@ public class Main {
                     break;
                 case 9:  // 添加学生
                     Users.addStudents();
+                    break;
                 case 10:  // 添加老师
                     Users.addTeachers();
+                    break;
                 case 11:  // 删除学生
                     Users.deleteStudents();
+                    break;
                 case 12:  // 删除老师
                     Users.deleteTeachers();
+                    break;
                 case 13:  // 初始化学生密码
                     Users.recoverStudentsPass();
+                    break;
                 case 14:  // 初始化老师密码
                     Users.recoverTeachersPass();
+                    break;
                 default:  // 非法输入
                     System.out.println("输入错误！！！");
             }

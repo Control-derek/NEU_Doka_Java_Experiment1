@@ -7,6 +7,10 @@ import java.util.Vector;
 public class Courses {
     static Vector<Course> clist = new Vector<Course>();
 
+    public Courses() {
+        System.out.println("!!!!!!!!!!!!!!!");
+    }
+
     public static void addCourse() {
         Courses.clist.add(Course.inputCourse(Courses.clist.size()+1));
     }

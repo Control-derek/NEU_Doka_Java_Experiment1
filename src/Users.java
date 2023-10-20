@@ -22,6 +22,9 @@ public class Users {
             System.out.println("请输入班级：");
             String Class = sc.next();
             studentList.add(new Student(name, pass, id, Class));
+            // 同步数据库
+            String insSql = database.stInsSql(id, Class, name, pass);
+            database.dbstmt.Insert(insSql);
             System.out.print("是否继续添加学生? y/n");
             if (!sc.next().equals("y"))
                 break;
@@ -42,6 +45,9 @@ public class Users {
             System.out.println("请输入职称：");
             String level = sc.next();
             teacherList.add(new Teacher(name, pass, id, level));
+            // 同步数据库
+            String insSql = database.tInsSql(id, level, name, pass);
+            database.dbstmt.Insert(insSql);
             System.out.print("是否继续添加老师? y/n");
             if (!sc.next().equals("y"))
                 break;
@@ -55,6 +61,9 @@ public class Users {
         for (int i=0; i<studentList.size(); ++i) {
             if (studentList.get(i).id == id) {
                 studentList.remove(i);  // 删除学生信息
+                // 同步数据库
+                String delSql = database.stDelSql(id);
+                database.dbstmt.Delete(delSql);
                 break;
             }
         }
@@ -67,6 +76,9 @@ public class Users {
         for (int i=0; i<teacherList.size(); ++i) {
             if (teacherList.get(i).workId == id) {
                 teacherList.remove(i);  // 删除老师信息
+                // 同步数据库
+                String delSql = database.tDelSql(id);
+                database.dbstmt.Delete(delSql);
                 break;
             }
         }
@@ -79,6 +91,9 @@ public class Users {
         for (int i=0; i<studentList.size(); ++i) {
             if (studentList.get(i).id == id) {
                 studentList.get(i).setPass("123456");  // 初始化密码
+                // 同步数据库
+                String delSql = database.stpassSql(id);
+                database.dbstmt.Delete(delSql);
                 break;
             }
         }
@@ -91,6 +106,9 @@ public class Users {
         for (int i=0; i<teacherList.size(); ++i) {
             if (teacherList.get(i).workId == id) {
                 teacherList.get(i).setPass("123456");  // 初始化密码
+                // 同步数据库
+                String delSql = database.stpassSql(id);
+                database.dbstmt.Delete(delSql);
                 break;
             }
         }
