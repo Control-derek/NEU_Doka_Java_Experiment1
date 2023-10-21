@@ -1,6 +1,4 @@
-import java.util.Comparator;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 public class Course {
     int id;  // 课程编号
@@ -38,15 +36,30 @@ public class Course {
         System.out.println("输入上课人数");
         int num = sc.nextInt();
         Course c;
+        StringBuffer queryt = new StringBuffer("Select tid, tlevel, tname, pass \n" +
+                "From teacher where tid = ");
+        queryt.append(tid);
+        String queryst = new String(queryt);
+        List<HashMap<String, Object>> selectt = database.dbstmt.Select(queryst);
+        if (selectt.size() == 0) {  // 课程老师不在老师表里 插入 密码默认为123456
+            String inssql = database.tInsSql(tid, level, tname, "123456");
+            database.dbstmt.Insert(inssql);
+        }
         if (type == 0) {
             System.out.println("输入学分：");
             int credit = sc.nextInt();
             c = new RequiredCourse(id, name, new Teacher(tname, tid, level), num, credit);
+            // 同步数据库
+            String insSql = database.rsInsSql(id, name, type, tid, num, credit);
+            database.dbstmt.Insert(insSql);
         }
         else {  // 选修课
             System.out.println("输入最大选课人数：");
             int maxNum = sc.nextInt();
             c = new OptionalCourse(id, name, new Teacher(tname, tid, level), num, maxNum);
+            // 同步数据库
+            String insSql = database.osInsSql(id, name, type, tid, num, maxNum);
+            database.dbstmt.Insert(insSql);
         }
         return c;
     }

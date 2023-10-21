@@ -1,18 +1,49 @@
 import java.io.*;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 public class Courses {
     static Vector<Course> clist = new Vector<Course>();
 
-    public Courses() {
-        System.out.println("!!!!!!!!!!!!!!!");
-    }
+//    public Courses() {
+//        System.out.println("!!!!!!!!!!!!!!!");
+//    }
 
+
+    public static void init() {  // 初始化课程列表
+        String queryoc = "Select cid, cname, ctype, tid, num, maxnum \n" +
+                "From optionalcourse";
+        String queryrc = "Select cid, cname, ctype, tid, num, credit \n" +
+                "From requiredcourse";
+        // 从数据库查出所有必修课信息
+        List<HashMap<String, Object>> selectrc = database.dbstmt.Select(queryrc);
+        for (HashMap<String, Object> c: selectrc) {
+            StringBuffer queryt = new StringBuffer("Select tid, tlevel, tname \n" +
+                    "From teacher where tid = ");
+            queryt.append((int)c.get("tid"));
+            String queryts = new String(queryt);
+            List<HashMap<String, Object>> selectst = database.dbstmt.Select(queryts);
+            clist.add(new RequiredCourse((int)c.get("cid"), (String)c.get("cname"),
+                    new Teacher((String)selectst.get(0).get("tname"), (int)selectst.get(0).get("tid"),
+                            (String)selectst.get(0).get("level")),
+                    (int)c.get("num"), (int)c.get("credit")));
+        }
+        // 从数据库查出所有选修课信息
+        List<HashMap<String, Object>> selectoc = database.dbstmt.Select(queryoc);
+        for (HashMap<String, Object> c: selectoc) {
+            StringBuffer queryt = new StringBuffer("Select tid, tlevel, tname \n" +
+                    "From teacher where tid = ");
+            queryt.append((int)c.get("tid"));
+            String queryts = new String(queryt);
+            List<HashMap<String, Object>> selectst = database.dbstmt.Select(queryts);
+            clist.add(new OptionalCourse((int)c.get("cid"), (String)c.get("cname"),
+                    new Teacher((String)selectst.get(0).get("tname"), (int)selectst.get(0).get("tid"),
+                            (String)selectst.get(0).get("level")),
+                    (int)c.get("num"), (int)c.get("maxnum")));
+        }
+    }
     public static void addCourse() {
         Courses.clist.add(Course.inputCourse(Courses.clist.size()+1));
+
     }
 
     public static void addCourses() {  // 添加多门课程信息
@@ -34,6 +65,9 @@ public class Courses {
         for (int i=0; i<Courses.clist.size(); ++i) {
             if (Courses.clist.get(i).name.equals(name)) {
                 Courses.clist.remove(i);  // 删除课程
+                // 同步数据库
+                String delSql = database.cDelSql(name);
+                database.dbstmt.Delete(delSql);
                 break;
             }
         }
@@ -62,6 +96,9 @@ public class Courses {
         for (int i=0; i<Courses.clist.size(); ++i) {
             if (Courses.clist.get(i).name.equals(name)) {
                 Courses.clist.get(i).teacher = new Teacher(tname, tid, level);  // 修改课程教师名
+                // 同步数据库
+                String updSql = database.cUpdSql(name, tid);
+                database.dbstmt.Update(updSql);
                 break;
             }
         }

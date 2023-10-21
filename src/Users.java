@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -7,6 +9,26 @@ public class Users {
     static Vector<Student> studentList = new Vector<Student>();
 
     static Vector<Teacher> teacherList = new Vector<Teacher>();
+
+    public static void init() {  // 初始化学生、老师列表
+        String queryst = "Select sid, sclass, sname, pass \n" +
+                "From student";
+        String queryt = "Select tid, tlevel, tname, pass \n" +
+                "From teacher";
+        // 从数据库查出所有学生信息
+        List<HashMap<String, Object>> selectst = database.dbstmt.Select(queryst);
+        for (HashMap<String, Object> c: selectst) {
+            studentList.add(new Student((String)c.get("sname"), (String)c.get("pass"),
+                    (int)c.get("sid"), (String)c.get("sclass")));
+        }
+        // 从数据库查出所有老师信息
+        List<HashMap<String, Object>> selectt = database.dbstmt.Select(queryt);
+        for (HashMap<String, Object> c: selectt) {
+            teacherList.add(new Teacher((String)c.get("tname"), (String)c.get("pass"),
+                    (int)c.get("tid"), (String)c.get("tlevel")));
+        }
+
+    }
 
     public static void addStudents() {
         int i = 1;
@@ -92,8 +114,8 @@ public class Users {
             if (studentList.get(i).id == id) {
                 studentList.get(i).setPass("123456");  // 初始化密码
                 // 同步数据库
-                String delSql = database.stpassSql(id);
-                database.dbstmt.Delete(delSql);
+                String updSql = database.stpassSql(id);
+                database.dbstmt.Update(updSql);
                 break;
             }
         }
@@ -107,8 +129,8 @@ public class Users {
             if (teacherList.get(i).workId == id) {
                 teacherList.get(i).setPass("123456");  // 初始化密码
                 // 同步数据库
-                String delSql = database.stpassSql(id);
-                database.dbstmt.Delete(delSql);
+                String updSql = database.stpassSql(id);
+                database.dbstmt.Update(updSql);
                 break;
             }
         }
