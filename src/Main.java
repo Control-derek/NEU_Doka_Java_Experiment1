@@ -30,7 +30,8 @@ public class Main {
 
     public static void menu() {
         Scanner sc = new Scanner(System.in);
-        int identity = login();
+        Vector loginInfo = login();
+        int identity = (int)loginInfo.get(0);
         if (identity == -1) {
             return;
         }
@@ -99,29 +100,40 @@ public class Main {
             }
         }
         else if (identity == 1) { // 教师菜单
+            Teacher loadingTeacher = (Teacher)loginInfo.get(1);
+            MainLoop:
             while (true) {
                 System.out.println("请选择操作:\n1.修改登录密码\n" +
                         "2.查看自己所授课程\n3.查看课程学生名单\n" +
                         "0.退出");
                 int choice = sc.nextInt();
                 switch (choice) {
-
+                    case 0 -> {database.dbstmt.close(); break MainLoop;}  // 退出系统
+                    case 1 -> loadingTeacher.settPassWord();  // 修改登录密码
+                    case 2 -> loadingTeacher.teachingCourse();  // 查看所授课程
+                    case 3 -> loadingTeacher.studentList();  // 查看所授课程学生名单
                 }
             }
         }
         else {
-            while (true) { // 教师菜单
+            Student loadingStudent = (Student)loginInfo.get(1);
+            MainLoop:
+            while (true) { // 学生菜单
                 System.out.println("请选择操作:\n1.修改登录密码\n" +
                         "2.查看自己所上课程\n3.选课\n" +
                         "0.退出");
                 int choice = sc.nextInt();
                 switch (choice) {
-
+                    case 0 -> {database.dbstmt.close(); break MainLoop;}  // 退出系统
+                    case 1 -> loadingStudent.setstPassWord();  // 修改登录密码
+                    case 2 -> loadingStudent.learningCourse();  // 查看自己所上课程
+                    case 3 -> loadingStudent.choiceCourse();  // 选课
                 }
             }
         }
     }
-    public static int login() {  // 登录用
+    public static Vector login() {  // 登录用
+        Vector res = new Vector();  // result
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入登陆身份：\n0.管理员\n" +
                 "1.教师\n" +
@@ -136,8 +148,9 @@ public class Main {
             String pass = sc.next();
             if (!pass.equals(Users.admin.getPass())) {
                 System.out.println("密码错误！系统退出！");
-                ;
             }
+            res.add(identity);
+            return res;
         }
         else if (identity == 1) {
             String name = sc.next();
@@ -151,8 +164,13 @@ public class Main {
             List<HashMap<String, Object>> selectt = database.dbstmt.Select(queryst);
             if (selectt.size() == 0) {  // 姓名或密码错误
                 System.out.println("用户名或密码错误！系统退出！");
-                return -1;
+                res.add(-1);
+                return res;
             }
+            res.add(identity);
+            res.add(new Teacher((String)selectt.get(0).get("tname"), (String)selectt.get(0).get("pass"),
+                    (int)selectt.get(0).get("tid"), (String)selectt.get(0).get("tlevel")));
+            return res;
         }
         else if (identity == 2){
             String name = sc.next();
@@ -166,13 +184,17 @@ public class Main {
             List<HashMap<String, Object>> selectt = database.dbstmt.Select(queryst);
             if (selectt.size() == 0) {  // 姓名或密码错误
                 System.out.println("用户名或密码错误！系统退出！");
-                return -1;
+                res.add(-1);
+                return res;
             }
+            res.add(identity);
+            res.add(new Student((String)selectt.get(0).get("sname"), (String)selectt.get(0).get("pass"),
+                    (int)selectt.get(0).get("sid"), (String)selectt.get(0).get("sclass")));
+            return res;
         }
-        else {
-            System.out.println("输入错误！系统退出！");
-            return -1;
-        }
-        return identity;
+
+        System.out.println("输入错误！系统退出！");
+        res.add(-1);
+        return res;
     }
 }

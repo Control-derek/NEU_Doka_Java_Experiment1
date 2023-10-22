@@ -12,7 +12,7 @@ public class User {
     public void show() {
         System.out.println("用户名：" + name);
     }
-    public void setPassWord() {  // 修改用户密码
+    public String setPassWord() {  // 修改用户密码
         Scanner sc = new Scanner(System.in);
         while(true) {
             System.out.print("请输入新密码（6位）：");
@@ -22,9 +22,8 @@ public class User {
             if (xpass1.equals(xpass2) && xpass1.length() == 6) {
                 // 两次密码需一致
                 this.pass = xpass1;
-                break;
+                return xpass1;
             }
-            else continue;
         }
     }
     public int login() {  // 管理员登录方法

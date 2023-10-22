@@ -114,7 +114,7 @@ public class Users {
             if (studentList.get(i).id == id) {
                 studentList.get(i).setPass("123456");  // 初始化密码
                 // 同步数据库
-                String updSql = database.stpassSql(id);
+                String updSql = database.stpassSql(id, "123456");
                 database.dbstmt.Update(updSql);
                 break;
             }
@@ -129,7 +129,7 @@ public class Users {
             if (teacherList.get(i).workId == id) {
                 teacherList.get(i).setPass("123456");  // 初始化密码
                 // 同步数据库
-                String updSql = database.stpassSql(id);
+                String updSql = database.tpassSql(id, "123456");
                 database.dbstmt.Update(updSql);
                 break;
             }

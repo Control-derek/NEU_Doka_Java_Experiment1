@@ -24,7 +24,7 @@ public class Courses {
             List<HashMap<String, Object>> selectst = database.dbstmt.Select(queryts);
             clist.add(new RequiredCourse((int)c.get("cid"), (String)c.get("cname"),
                     new Teacher((String)selectst.get(0).get("tname"), (int)selectst.get(0).get("tid"),
-                            (String)selectst.get(0).get("level")),
+                            (String)selectst.get(0).get("tlevel")),
                     (int)c.get("num"), (int)c.get("credit")));
         }
         // 从数据库查出所有选修课信息
@@ -37,7 +37,7 @@ public class Courses {
             List<HashMap<String, Object>> selectst = database.dbstmt.Select(queryts);
             clist.add(new OptionalCourse((int)c.get("cid"), (String)c.get("cname"),
                     new Teacher((String)selectst.get(0).get("tname"), (int)selectst.get(0).get("tid"),
-                            (String)selectst.get(0).get("level")),
+                            (String)selectst.get(0).get("tlevel")),
                     (int)c.get("num"), (int)c.get("maxnum")));
         }
     }

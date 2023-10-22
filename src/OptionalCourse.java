@@ -14,6 +14,8 @@ public class OptionalCourse extends Course{
         this.maxStuNum = maxNum;
     }
 
+    public int getmaxNum() {return maxStuNum;}
+
     public void show() {
         System.out.print(id + " " + name);
         System.out.print(" 选修 ");

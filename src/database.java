@@ -9,6 +9,58 @@ public class database {
         Courses.init();  // 初始化必修、选修课程列表
 
     }
+    static String scQueSql(int cid, int sid) {
+        StringBuffer scQueSql = new StringBuffer("select * from sc where cid = ");
+        scQueSql.append(cid);
+        scQueSql.append("and sid = ");
+        scQueSql.append(sid);
+        String queSql = new String(scQueSql);
+        return queSql;
+    }
+    static String scQueSql(int sid) {  // 查看学生选了什么课
+        StringBuffer scQueSql = new StringBuffer("select s.cid, s.cname, s.ctype, teacher.tname, s.num, s.credit from \n" +
+                "(SELECT requiredcourse.*, sc.sid FROM requiredcourse, sc\n" +
+                "where requiredcourse.cid = sc.cid\n" +
+                "union\n" +
+                "SELECT optionalcourse.*, sc.sid FROM optionalcourse, sc\n" +
+                "where optionalcourse.cid = sc.cid) as s, teacher\n" +
+                "where teacher.tid = s.tid and s.sid =");
+        scQueSql.append(sid);
+        String queSql = new String(scQueSql);
+        return queSql;
+    }
+    static String stQueSql(int cid) {
+        StringBuffer stQueSql = new StringBuffer("SELECT student.* FROM student, sc\n" +
+                "where student.sid = sc.sid and sc.cid = ");
+        stQueSql.append(cid);
+        String queSql = new String(stQueSql);
+        return queSql;
+    }
+    static String tcQueSql(int tid) {  // 查看教师所授课程
+        StringBuffer queSqlb = new StringBuffer("SELECT * FROM requiredcourse \n" +
+                "where requiredcourse.tid= ");
+        queSqlb.append(tid);
+        queSqlb.append(" union\n" +
+                "SELECT * FROM optionalcourse \n" +
+                "where optionalcourse.tid= ");
+        queSqlb.append(tid);
+        String queSql = new String(queSqlb);
+        return queSql;
+    }
+    static String ctQueSql(int tid, int cid) {
+        StringBuffer queSqlb = new StringBuffer("SELECT * FROM requiredcourse \n" +
+                "where requiredcourse.tid = ");
+        queSqlb.append(tid);
+        queSqlb.append("and requiredcourse.cid = ").append(cid);
+        queSqlb.append(" union\n" +
+                "SELECT * FROM optionalcourse \n" +
+                "where optionalcourse.tid= ");
+        queSqlb.append(tid);
+        queSqlb.append("and optionalcourse.cid = ").append(cid);
+        String queSql = new String(queSqlb);
+        return queSql;
+    }
+
     static String stInsSql(int id, String Class, String name, String pass) {
         StringBuffer stInsSql = new StringBuffer("insert into Student values(");
         stInsSql.append(id);
@@ -31,6 +83,13 @@ public class database {
         tInsSql.append(", ");
         tInsSql.append("'").append(pass).append("'").append(")");
         String insSql = new String(tInsSql);
+        return insSql;
+    }
+    static String scInsSql(int cid, int sid) {
+        StringBuffer scInsSql = new StringBuffer("insert into sc(sid, cid) values(");
+        scInsSql.append(sid).append(", ");
+        scInsSql.append(cid).append(")");
+        String insSql = new String(scInsSql);
         return insSql;
     }
     static String rsInsSql(int id, String name, int type, int tid, int num, int credit) {
@@ -86,18 +145,28 @@ public class database {
         String sql = new String(delSql);
         return sql;
     }
-    static String stpassSql(int id) {
-        StringBuffer updSql = new StringBuffer("update Student set pass = '123456' where sid = ");
+    static String stpassSql(int id, String password) {
+        StringBuffer updSql = new StringBuffer("update Student set pass = ");
+        updSql.append("'").append(password).append("' ");
+        updSql.append("where sid = ");
         updSql.append(id);
         String sql = new String(updSql);
         return sql;
     }
 
-    static String tpassSql(int id) {
-        StringBuffer updSql = new StringBuffer("update teacher set pass = '123456' where tid = ");
+    static String tpassSql(int id, String password) {
+        StringBuffer updSql = new StringBuffer("update teacher set pass = ");
+        updSql.append("'").append(password).append("' ");
+        updSql.append("where tid = ");
         updSql.append(id);
         String sql = new String(updSql);
         return sql;
+    }
+    static String ocUpdSql(int cid) {
+        StringBuffer ocUpdSql = new StringBuffer("update optionalcourse set num = num + 1 where cid = ");
+        ocUpdSql.append(cid);
+        String updSql = new String(ocUpdSql);
+        return updSql;
     }
     static String cUpdSql(String name, int tid) {
         StringBuffer updSql = new StringBuffer("update optionalcourse set tid = ");
