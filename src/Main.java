@@ -148,6 +148,8 @@ public class Main {
             String pass = sc.next();
             if (!pass.equals(Users.admin.getPass())) {
                 System.out.println("密码错误！系统退出！");
+                res.add(-1);
+                return res;
             }
             res.add(identity);
             return res;

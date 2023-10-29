@@ -147,6 +147,7 @@ public class Users {
         System.out.println("工号 名字 职称");
         for (Teacher t: teacherList) {
             t.show();
+            System.out.println(" ");
         }
     }
 }
